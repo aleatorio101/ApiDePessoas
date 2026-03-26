@@ -10,7 +10,7 @@
 
 CREATE TABLE pessoa (
     id          BIGSERIAL       PRIMARY KEY,
-    tipo        VARCHAR(1)      NOT NULL,           -- 'F' = Física, 'J' = Jurídica
+    tipo        VARCHAR(1)      NOT NULL,
     email       VARCHAR(255)    NOT NULL UNIQUE,
     criado_em   TIMESTAMP       NOT NULL DEFAULT NOW(),
     atualizado_em TIMESTAMP     NOT NULL DEFAULT NOW()
@@ -19,13 +19,13 @@ CREATE TABLE pessoa (
 CREATE TABLE pessoa_fisica (
     id      BIGINT  PRIMARY KEY REFERENCES pessoa(id) ON DELETE CASCADE,
     nome    VARCHAR(255)    NOT NULL,
-    cpf     VARCHAR(14)     NOT NULL UNIQUE          -- formato: 000.000.000-00
+    cpf     VARCHAR(14)     NOT NULL UNIQUE
 );
 
 CREATE TABLE pessoa_juridica (
     id              BIGINT  PRIMARY KEY REFERENCES pessoa(id) ON DELETE CASCADE,
     razao_social    VARCHAR(255)    NOT NULL,
-    cnpj            VARCHAR(18)     NOT NULL UNIQUE  -- formato: 00.000.000/0000-00
+    cnpj            VARCHAR(18)     NOT NULL UNIQUE
 );
 
 CREATE TABLE endereco (
@@ -37,7 +37,7 @@ CREATE TABLE endereco (
     bairro          VARCHAR(100)    NOT NULL,
     cidade          VARCHAR(100)    NOT NULL,
     estado          CHAR(2)         NOT NULL,
-    cep             VARCHAR(9)      NOT NULL         -- formato: 00000-000
+    cep             VARCHAR(9)      NOT NULL
 );
 
 CREATE INDEX idx_pessoa_tipo        ON pessoa(tipo);
