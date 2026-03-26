@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pessoas-api
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:pessoas_db}
+    username: ${DB_USER:pessoas_user}
+    password: ${DB_PASSWORD:pessoas_pass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate          # Flyway gerencia o schema; JPA só valida
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        format_sql: true
+        default_schema: public
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+  info:
+    title: Pessoas API
+    description: API REST para gerenciamento de Pessoas Físicas e Jurídicas
+    version: 1.0.0
+
+logging:
+  level:
+    com.webpublico.pessoas: INFO
+    org.flywaydb: INFO
