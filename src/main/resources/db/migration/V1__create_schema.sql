@@ -1,12 +1,8 @@
--- =============================================================
--- V1: Criação do schema inicial
--- Estratégia de herança: JOINED TABLE
---   - Tabela 'pessoa' contém os campos comuns
---   - Tabelas filhas 'pessoa_fisica' e 'pessoa_juridica'
---     armazenam somente os atributos específicos de cada tipo
---   - Esta estratégia é preferível a SINGLE_TABLE para manter
---     integridade relacional (sem colunas nullable por design)
--- =============================================================
+DROP TABLE IF EXISTS endereco;
+DROP TABLE IF EXISTS pessoa_fisica;
+DROP TABLE IF EXISTS pessoa_juridica;
+DROP TABLE IF EXISTS pessoa;
+
 
 CREATE TABLE pessoa (
     id          BIGSERIAL       PRIMARY KEY,
@@ -36,7 +32,7 @@ CREATE TABLE endereco (
     complemento     VARCHAR(100),
     bairro          VARCHAR(100)    NOT NULL,
     cidade          VARCHAR(100)    NOT NULL,
-    estado          CHAR(2)         NOT NULL,
+    estado          VARCHAR(2)      NOT NULL,
     cep             VARCHAR(9)      NOT NULL
 );
 
