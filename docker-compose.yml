@@ -1,0 +1,55 @@
+
+# =============================================================
+# Docker Compose — Ambiente completo: App + PostgreSQL
+# Rede interna isolada garante que os serviços se comuniquem
+# pelo nome do serviço (ex: postgres) sem expor portas desnecessárias.
+# =============================================================
+
+services:
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: pessoas-postgres
+    environment:
+      POSTGRES_DB: pessoas_db
+      POSTGRES_USER: pessoas_user
+      POSTGRES_PASSWORD: pessoas_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pessoas_user -d pessoas_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pessoas-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pessoas-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: pessoas_db
+      DB_USER: pessoas_user
+      DB_PASSWORD: pessoas_pass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - pessoas-network
+    restart: on-failure
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  pessoas-network:
+    driver: bridge
